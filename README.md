@@ -4,6 +4,10 @@
 
 This project provides a [Custom Reader] for [Pandoc] that allows to read OpenRefine history files and creates documentation from them.
 
+[OpenRefine]: <https://openrefine.org/>
+[Pandoc]: <https://pandoc.org/>
+[Custom Reader]: <https://pandoc.org/custom-readers.html>
+
 Note: The reader is currently incomplete and does not include all relevant information for all OpenRefine operations. It’s mainly a proof of concept. Patches welcome!
 
 The output can be any format that Pandoc can write. Two output formats are recommended:
