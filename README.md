@@ -24,39 +24,6 @@ The Markdown file can then be amended with additional explanation of the input a
 
 # Example output
 
-<style>
-  h2 {
-    font-size: 1.25rem;
-  }
-  div.sourceCode {
-    margin: initial;
-  }
-  table {
-    border-radius: .5em;
-    box-shadow: 2px 2px 4px silver;
-    border-collapse: separate;
-    border-spacing: .25em .75em;
-  }
-  tbody {
-    border: none;
-  }
-  td {
-    vertical-align: top;
-  }
-  td:first-child {
-    font-weight: bold;
-  }
-  td:first-child::after {
-    content: ":"
-  }
-  td:last-child {
-    border-radius: .2em;
-    padding: .2em;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px inset;
-  }
-</style>
-
-
 ## Split column city by separator
 
 |                 |     |
