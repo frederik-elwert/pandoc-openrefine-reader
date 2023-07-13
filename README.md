@@ -21,3 +21,77 @@ pandoc -f openrefine.lua -so example_history.html example_history.json
 ```
 
 The Markdown file can then be amended with additional explanation of the input and the transformation steps, creating a notebook-like document that can then later be converted into HTML or any other output format.
+
+# Example output
+
+<style>
+  h2 {
+    font-size: 1.25rem;
+  }
+  div.sourceCode {
+    margin: initial;
+  }
+  table {
+    border-radius: .5em;
+    box-shadow: 2px 2px 4px silver;
+    border-collapse: separate;
+    border-spacing: .25em .75em;
+  }
+  tbody {
+    border: none;
+  }
+  td {
+    vertical-align: top;
+  }
+  td:first-child {
+    font-weight: bold;
+  }
+  td:first-child::after {
+    content: ":"
+  }
+  td:last-child {
+    border-radius: .2em;
+    padding: .2em;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px inset;
+  }
+</style>
+
+
+## Split column city by separator
+
+|                 |     |
+|-----------------|-----|
+| At most columns | 2   |
+| Separator       | ` ` |
+
+## Rename column city 1 to zip
+
+## Rename column city 2 to city
+
+## Create column geojson at index 7 by fetching URLs based on column city
+
+|            |                                                                                                                                                                                                                   |
+|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Expression | `"https://nominatim.openstreetmap.org/search.php?street=" + escape(cells.street.value, "url") + "&city=" + escape(cells.city.value, "url") + "&country=Germany&postalcode=" + cells.zip.value + "&format=jsonv2"` |
+| Language   | grel                                                                                                                                                                                                              |
+
+## Create column lat at index 8 based on column geojson
+
+|            |                               |
+|------------|-------------------------------|
+| Expression | `value.parseJson()[0]["lat"]` |
+| Language   | grel                          |
+
+## Create column lon at index 8 based on column geojson
+
+|            |                               |
+|------------|-------------------------------|
+| Expression | `value.parseJson()[0]["lon"]` |
+| Language   | grel                          |
+
+## Create column coordinates at index 10 based on column lat
+
+|            |                                 |
+|------------|---------------------------------|
+| Expression | `value + "," + cells.lon.value` |
+| Language   | grel                            |

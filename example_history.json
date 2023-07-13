@@ -1,0 +1,97 @@
+[
+  {
+    "op": "core/column-split",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "city",
+    "guessCellType": true,
+    "removeOriginalColumn": true,
+    "mode": "separator",
+    "separator": " ",
+    "regex": false,
+    "maxColumns": 2,
+    "description": "Split column city by separator"
+  },
+  {
+    "op": "core/column-rename",
+    "oldColumnName": "city 1",
+    "newColumnName": "zip",
+    "description": "Rename column city 1 to zip"
+  },
+  {
+    "op": "core/column-rename",
+    "oldColumnName": "city 2",
+    "newColumnName": "city",
+    "description": "Rename column city 2 to city"
+  },
+  {
+    "op": "core/column-addition-by-fetching-urls",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "city",
+    "urlExpression": "grel:\"https://nominatim.openstreetmap.org/search.php?street=\" + escape(cells.street.value, \"url\") + \"&city=\" + escape(cells.city.value, \"url\") + \"&country=Germany&postalcode=\" + cells.zip.value + \"&format=jsonv2\"",
+    "onError": "set-to-blank",
+    "newColumnName": "geojson",
+    "columnInsertIndex": 7,
+    "delay": 500,
+    "cacheResponses": true,
+    "httpHeadersJson": [
+      {
+        "name": "authorization",
+        "value": ""
+      },
+      {
+        "name": "user-agent",
+        "value": "OpenRefine 3.7.2 [f7ad526]"
+      },
+      {
+        "name": "accept",
+        "value": "*/*"
+      }
+    ],
+    "description": "Create column geojson at index 7 by fetching URLs based on column city using expression grel:\"https://nominatim.openstreetmap.org/search.php?street=\" + escape(cells.street.value, \"url\") + \"&city=\" + escape(cells.city.value, \"url\") + \"&country=Germany&postalcode=\" + cells.zip.value + \"&format=jsonv2\""
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "geojson",
+    "expression": "grel:value.parseJson()[0][\"lat\"]",
+    "onError": "set-to-blank",
+    "newColumnName": "lat",
+    "columnInsertIndex": 8,
+    "description": "Create column lat at index 8 based on column geojson using expression grel:value.parseJson()[0][\"lat\"]"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "geojson",
+    "expression": "grel:value.parseJson()[0][\"lon\"]",
+    "onError": "set-to-blank",
+    "newColumnName": "lon",
+    "columnInsertIndex": 8,
+    "description": "Create column lon at index 8 based on column geojson using expression grel:value.parseJson()[0][\"lon\"]"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "lat",
+    "expression": "grel:value + \",\" + cells.lon.value",
+    "onError": "set-to-blank",
+    "newColumnName": "coordinates",
+    "columnInsertIndex": 10,
+    "description": "Create column coordinates at index 10 based on column lat using expression grel:value + \",\" + cells.lon.value"
+  }
+]
